@@ -1,9 +1,11 @@
 const ONE_DAY = 1000 * 60 * 60 * 24;
 const CLARIFAI_API_USER_LIMIT = 20;
 const CLARIFAI_API_GUEST_LIMIT = 2;
-const PORT = 8080;
-const SERVER_HOST = `http://localhost:${PORT}`;
-const CLIENT_HOST = "http://localhost:3001";
+const PORT = process.env.PORT||8080;
+// const SERVER_HOST = `http://localhost:${PORT}`;
+// const CLIENT_HOST = "http://localhost:3001";
+const CLIENT_HOST ='https://face-extractor-app.herokuapp.com';
+                   const SERVER_HOST =   'https://git.heroku.com/face-extractor-app.git';
 const CIPHER_KEY = "nice";
 
 module.exports = {
