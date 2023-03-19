@@ -1,5 +1,6 @@
 const API_KEY = "87cec9e486e9434a82dc7a55f5ff0bb3";
 const Clarifai = require("clarifai");
+require("dotenv").config();
 // const fs = require("fs");
 const util = require("util");
 const {
@@ -7,10 +8,18 @@ const {
   CLARIFAI_API_GUEST_LIMIT,
 } = require("../constants/constants");
 const { knex } = require("../database/knex");
+const ClarifaiAPI = require("../helper/ClarifaiREST");
 
 // debugger
+
 const app = new Clarifai.App({
   apiKey: API_KEY,
+});
+
+const claraifaiAPI = new ClarifaiAPI({
+  access_token: process.env.CLARIFAI_KEY,
+  user_id: process.env.CLARIFAI_USER_ID,
+  app_id: process.env.CLARIFAI_APP_ID,
 });
 
 const handleClarifaiApiCall = () => async (req, res) => {
@@ -43,8 +52,10 @@ const handleClarifaiApiCall = () => async (req, res) => {
     console.log("fetch entries error: ", err);
   }
 
-  app.models
-    .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
+  // app.models
+  //   .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
+  claraifaiAPI
+    .postImageURL(req.body.input)
     .then((data) => {
       //   console.log("Clarifai data: ", util.inspect(data, false, null, true));
 
@@ -96,8 +107,10 @@ const handleClarifaiLocalImage = () => async (req, res) => {
     apiKey: API_KEY,
   });
 
-  app1.models
-    .predict(Clarifai.FACE_DETECT_MODEL, { base64: imageBytes })
+  // app1.models
+  //   .predict(Clarifai.FACE_DETECT_MODEL, { base64: imageBytes })
+  claraifaiAPI
+    .postBase64(imageBytes)
     .then((data) => {
       // console.log("Clarifai data: ", util.inspect(data, false, null, true));
       // console.log("data claraifai bytes: ", data.toString());
